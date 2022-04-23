@@ -1,5 +1,5 @@
 # Tic-Tac-Toe_game-using-LinkedList
-Tic-Tac-Toe game implemented using LinkedList, datastructures and Algorithms 
+Tic-Tac-Toe game implemented using LinkedList, datastructures and Algorithms in C++.
 
 OBJECTIVE:
 This project for aims to develop a Tic Tac Toe game using Data Structures. It mainly consists of developing and implementing a computer program that plays Tic Tac Toe against another player.or playing Tic Tac Toe against another play (multiplayer).
