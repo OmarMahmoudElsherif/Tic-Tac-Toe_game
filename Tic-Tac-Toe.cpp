@@ -5,18 +5,19 @@
 #include<stdlib.h>
 #include <time.h>
 #include <algorithm>
+#include <Windows.h>
+#include<fstream>
 using namespace std;
 
 
-struct node           // we implemented this game using linked list and arrays *FROM SCRATCH*
+struct node           // we implemented this game using linked list
 {
 	char data;
 	node* next;
 };
 
-//function to insert a node in a linked list at a given position
 
-void insert_at_position(node** head, char data, int pos)
+void insert_at_position(node** head, char data, int pos)    //function to insert a node at a given position
 {
 	node* newnode = new node();
 	node* prev;
@@ -50,11 +51,30 @@ void insert_at_position(node** head, char data, int pos)
 
 }
 
-//displaying the 3x3 tic-tac-toe board
 
-void display(node* head)
+
+void display(node* head)           //displaying the 3x3 tic-tac-toe board
 {
 	system("CLS");    // to clear screen
+	  //system("Color 0E");   //making color text cyan
+
+	/*  first display method
+	int i = -1;
+	while (head != NULL)
+	{
+		i++;
+		if (i % 3 == 0)
+		{
+			std::cout << "\n                  ---------------\n                   | ";
+			std::cout << head->data << " | ";
+		}
+		else
+			std::cout << head->data << " | ";
+		head = head->next;
+
+	}
+	std::cout << "\n                  ---------------\n\n";
+	*/
 
 	cout << "\n";
 	cout << "                ___________________\n";
@@ -73,8 +93,7 @@ void display(node* head)
 }
 
 
-//function to put either 'X' or 'O' in board
-bool change_value(node* head, char data, int index)
+bool change_value(node* head, char data, int index)  //function to put either 'X' or 'O' in board
 {
 	for (int i = 0; i < index; i++)
 		head = head->next;
@@ -86,15 +105,13 @@ bool change_value(node* head, char data, int index)
 	return true;
 }
 
-//this function is used to check if either 'X' or 'O' won or draw
 
-void iscompleted(node* head)
+void iscompleted(node* head)        //this function is used to check if any player won
 {
-	// check if any row is matched with same type
 	node* tmphead = head;
 	int Xcounter = 0;
 	int Ocounter = 0;
-	for (int j = 0; j < 3; j++)
+	for (int j = 0; j < 3; j++)        // check if any row is matched with same type
 	{
 		Xcounter = 0;
 		Ocounter = 0;
@@ -124,90 +141,37 @@ void iscompleted(node* head)
 
 	}
 
-	//check if Left diagonal X is completed
-	tmphead = head;
+	tmphead = head;             //check if Left diagonal X is completed
 	Xcounter = Ocounter = 0;
 	if (tmphead->data == 'X')
 	{
 		Xcounter++;
-		//	for (int j = 0; j < 4; j++)
-		tmphead = tmphead->next->next->next->next;
+		for (int j = 0; j < 4; j++)
+			tmphead = tmphead->next;
 
 		if (tmphead->data == 'X')
 			Xcounter++;
 
-		//for (int j = 0; j < 4; j++)
-		tmphead = tmphead->next->next->next->next;
+		for (int j = 0; j < 4; j++)
+			tmphead = tmphead->next;
+
 		if (tmphead->data == 'X')
 			Xcounter++;
 
 	}
 
-	//check if Left diagonal O is completed
+
 	tmphead = head;
-	if (tmphead->data == 'O')
+	if (tmphead->data == 'O')           //check if Left diagonal O is completed
 	{
 		Ocounter++;
-		//for (int j = 0; j < 4; j++)
-		tmphead = tmphead->next->next->next->next;
+		for (int j = 0; j < 4; j++)
+			tmphead = tmphead->next;
 		if (tmphead->data == 'O')
 			Ocounter++;
 
-		//for (int j = 0; j < 4; j++)
-		tmphead = tmphead->next->next->next->next;
-		if (tmphead->data == 'O')
-			Ocounter++;
-
-	}
-	if (Xcounter == 3)
-	{
-		display(head);
-		std::cout << "\n---------------X Won...-------------\n";
-
-		exit(0);
-	}
-	if (Ocounter == 3)
-	{
-		display(head);
-		std::cout << "\n---------------O Won...-------------\n";
-
-		exit(0);
-	}
-
-	//check if Right diagonal X is completed
-	tmphead = head->next->next;
-	Xcounter = Ocounter = 0;
-	if (tmphead->data == 'X')
-	{
-		Xcounter++;
-		//for (int j = 0; j < 2; j++)
-		tmphead = tmphead->next->next;
-
-		if (tmphead->data == 'X')
-			Xcounter++;
-
-		//for (int j = 0; j < 2; j++)
-		tmphead = tmphead->next->next;
-
-		if (tmphead->data == 'X')
-			Xcounter++;
-
-	}
-
-
-	//check if Right diagonal O is completed
-	tmphead = head->next->next;
-	if (tmphead->data == 'O')
-	{
-		Ocounter++;
-		//for (int j = 0; j < 2; j++)
-		tmphead = tmphead->next->next;
-
-		if (tmphead->data == 'O')
-			Ocounter++;
-
-		//for (int j = 0; j < 2; j++)
-		tmphead = tmphead->next->next;
+		for (int j = 0; j < 4; j++)
+			tmphead = tmphead->next;
 
 		if (tmphead->data == 'O')
 			Ocounter++;
@@ -228,24 +192,74 @@ void iscompleted(node* head)
 		exit(0);
 	}
 
+	tmphead = head->next->next;                  //check if Right diagonal X is completed
+	Xcounter = Ocounter = 0;
+	if (tmphead->data == 'X')
+	{
+		Xcounter++;
+		for (int j = 0; j < 2; j++)
+			tmphead = tmphead->next;
 
-	tmphead = head;
-	// check if any column is matched with same type
+		if (tmphead->data == 'X')
+			Xcounter++;
+
+		for (int j = 0; j < 2; j++)
+			tmphead = tmphead->next;
+
+		if (tmphead->data == 'X')
+			Xcounter++;
+
+	}
+
+
+	tmphead = head->next->next;                  //check if Right diagonal O is completed
+	if (tmphead->data == 'O')
+	{
+		Ocounter++;
+		for (int j = 0; j < 2; j++)
+			tmphead = tmphead->next;
+
+		if (tmphead->data == 'O')
+			Ocounter++;
+
+		for (int j = 0; j < 2; j++)
+			tmphead = tmphead->next;
+
+		if (tmphead->data == 'O')
+			Ocounter++;
+
+	}
+	if (Xcounter == 3)
+	{
+		display(head);
+		std::cout << "\n---------------X Won...-------------\n";
+
+		exit(0);
+	}
+	if (Ocounter == 3)
+	{
+		display(head);
+		std::cout << "\n---------------O Won...-------------\n";
+
+		exit(0);
+	}
+
+
+	tmphead = head;              // check if any column is matched with same type
 	for (int j = 0; j < 3; j++)
 	{
-		//tmphead = head;
 		Xcounter = Ocounter = 0;
 		if (tmphead->data == 'X')
 		{
 			Xcounter++;
-			//for (int j = 0; j < 3; j++)
-			tmphead = tmphead->next->next->next;
+			for (int j = 0; j < 3; j++)
+				tmphead = tmphead->next;
 
 			if (tmphead->data == 'X')
 				Xcounter++;
 
-			//for (int j = 0; j < 3; j++)
-			tmphead = tmphead->next->next->next;
+			for (int j = 0; j < 3; j++)
+				tmphead = tmphead->next;
 
 			if (tmphead->data == 'X')
 				Xcounter++;
@@ -253,26 +267,21 @@ void iscompleted(node* head)
 		}
 		else if (tmphead->data == 'O')
 		{
-
 			Ocounter++;
-			//for (int j = 0; j < 3; j++)
-			tmphead = tmphead->next->next->next;
+			for (int j = 0; j < 3; j++)
+				tmphead = tmphead->next;
 
 			if (tmphead->data == 'O')
 				Ocounter++;
 
-			//for (int j = 0; j < 3; j++)
-			tmphead = tmphead->next->next->next;
+			for (int j = 0; j < 3; j++)
+				tmphead = tmphead->next;
 
 			if (tmphead->data == 'O')
 				Ocounter++;
 
 		}
-		for (int k = 0; k <= j; k++)
-		{
-			tmphead = head;
-			tmphead = tmphead->next;
-		}
+
 		if (Xcounter == 3)
 		{
 			display(head);
@@ -294,7 +303,6 @@ void iscompleted(node* head)
 
 }
 
-//Easy diffuclty -single player function
 int Easy_difficulty(node* head)
 {
 	node* current = head;
@@ -319,7 +327,6 @@ int Easy_difficulty(node* head)
 	return random_no;
 }
 
-//to draw grid
 char gridChar(int i)
 {
 	switch (i) {
@@ -332,7 +339,6 @@ char gridChar(int i)
 	}
 }
 
-//this fucnction used to draw the square output of tic_tac_toe
 void draw(int a[9])
 {
 	system("CLS");    // to clear screen
@@ -423,17 +429,31 @@ void computerMove(int board[9])
 
 void playerMove(int board[9])
 {
+	char move1;
 	int move;
 label1:
 	cout << "Please enter a number from 1 to 9: ";
-	cin >> move;
+	cin.ignore();
+	cin >> move1;
+	if (!isdigit(move1))
+	{
+		if (move1 == '-')
+		{
+			cout << "invalid input\n";
+			cin.ignore();
+			goto label1;
+		}
+		cout << "invalid input please enter a number from 1 to 9\n";
+		goto label1;
+	}
+	move = move1 - '0';
 	cout << "\n";
 	if (move > 9 || move < 1)
 	{
-		cout << "invalid try againg\n";
+		cout << "invalid try again\n";
 		goto label1;
 	}
-	else if (board[move - 1] == 1)
+	else if (board[move - 1] == 1 || board[move - 1] == -1)
 	{
 		cout << "invalid try again\n";
 		goto label1;
@@ -449,7 +469,6 @@ int main()
 
 	double start = clock();     //This is for calculation Time execution
 
-
 	node* head = NULL;
 	insert_at_position(&head, '1', 0);
 	insert_at_position(&head, '2', 1);
@@ -464,26 +483,52 @@ int main()
 
 	int select;
 	int type;
-
 	std::cout << "\nFor Single-player press '1' : \n";
 	std::cout << "\nFor Multi-player press '2' : \n";
-	std::cout << "  \n Your Selection : ";
-	std::cin >> type;
-
+	cout << "  \n Your Selection : ";
+	cin >> type;
 	if (type == 1)
 	{
+		char diff1;
 		int diff;
 		std::cout << "\nFor Difficulty :\n  -Hard = '1' \n  -Easy = '0' \n";
-	label:	std::cout << "\nChoose Difficulty : ";
-		std::cin >> diff;
-
+	label60:
+		std::cout << "\nChoose Difficulty : ";
+		cin.ignore();
+		cin >> diff1;
+		if (!isdigit(diff1))
+		{
+			if (diff1 == '-')
+			{
+				cout << "invalid input\n";
+				cin.ignore();
+				goto label60;
+			}
+			cout << "invalid input please enter a number from 1 to 9\n";
+			goto label60;
+		}
+		diff = diff1 - '0';
 		if (diff == 0)
 		{
 			for (int i = 0; i <= 4; i++)
 			{
+				char select1;
+			label4:
 				std::cout << "\nwhere do you want to put X : ";
-				std::cin >> select;
-
+				cin.ignore();
+				cin >> select1;
+				if (!isdigit(select1))
+				{
+					if (select1 == '-')
+					{
+						cout << "invalid input\n";
+						cin.ignore();
+						goto label4;
+					}
+					cout << "invalid input please enter a number from 1 to 9\n";
+					goto label4;
+				}
+				select = select1 - '0';
 				while (select > 9 || select <= 0)
 				{
 					std::cout << "\nInvalid number please try again...\n";
@@ -499,10 +544,8 @@ int main()
 					continue;
 				}
 				iscompleted(head);
-
 				if (i == 4)
 					break;
-
 				change_value(head, 'O', Easy_difficulty(head) - 1);
 				display(head);
 				iscompleted(head);
@@ -513,14 +556,27 @@ int main()
 		{
 
 			int board[9] = { 0,0,0,0,0,0,0,0,0 };
-
 			//computer squares are 1, player squares are -1.
+		label99:
 			cout << "\n  -Computer: 'O'\n  -You: 'X'\nPlay (1)st or (2)nd? ";
 			int player = 0;
-			cin >> player;
+			char player1;
+			cin.ignore();
+			cin >> player1;
+			if (!isdigit(player1))
+			{
+				if (player1 == '-')
+				{
+					cout << "invalid input\n";
+					cin.ignore();
+					goto label99;
+				}
+				cout << "invalid input please enter a number from 1 to 9\n";
+				goto label99;
+			}
+			player = player1 - '0';
 			cout << "\n";
 			unsigned turn;
-
 			for (turn = 0; turn < 9 && win(board) == 0; ++turn) {
 				if ((turn + player) % 2 == 0)
 					computerMove(board);
@@ -529,11 +585,10 @@ int main()
 					playerMove(board);
 				}
 			}
-
 			switch (win(board)) {
 			case 0:
 				draw(board);
-				cout << "A draw. How droll.\n";
+				cout << "It's a draw\n";
 				break;
 			case 1:
 				draw(board);
@@ -541,7 +596,7 @@ int main()
 				break;
 			case -1:
 				draw(board);
-				cout << "You win. Inconceivable!\n";
+				cout << "You win. Horray!\n";
 				break;
 			}
 
@@ -549,7 +604,7 @@ int main()
 		else
 		{
 			cout << "Invalid input please enter 0 OR 1 ONLY!\n";
-			goto label;
+			goto label60;
 		}
 
 	}
@@ -558,16 +613,29 @@ int main()
 	{
 		for (int i = 0; i <= 4; i++)
 		{
-
+			char select1;
+		label9:
 			std::cout << "\nwhere do you want to put X : ";
-			std::cin >> select;
-
+			cin.ignore();
+			cin >> select1;
+			if (!isdigit(select1))
+			{
+				if (select1 == '-')
+				{
+					cout << "invalid input\n";
+					cin.ignore();
+					goto label9;
+				}
+				cout << "invalid input please enter a number from 1 to 9\n";
+				goto label9;
+			}
+			select = select1 - '0';
 			while (select > 9 || select <= 0)
 			{
 				std::cout << "\nInvalid number please try again...\n";
 				std::cout << "\nwhere do you want to put X : ";
 				std::cin >> select;
-				if (select > 0 && select <= 9)
+				if (select > 0 && select <= 9 && isdigit(select))
 					break;
 			}
 			if (!change_value(head, 'X', select - 1))
@@ -576,14 +644,26 @@ int main()
 				i--;
 				continue;
 			}
-
 			iscompleted(head);
 			display(head);
-
 			if (i == 4)
 				break;
+		label10:
 			std::cout << "\nwhere do you want to put O : ";
-			std::cin >> select;
+			cin.ignore();
+			cin >> select1;
+			if (!isdigit(select1))
+			{
+				if (select1 == '-')
+				{
+					cout << "invalid input\n";
+					cin.ignore();
+					goto label10;
+				}
+				cout << "invalid input please enter a number from 1 to 9\n";
+				goto label10;
+			}
+			select = select1 - '0';
 			while (select > 9 || select <= 0)
 			{
 				std::cout << "\nInvalid number please try again...\n";
@@ -593,6 +673,17 @@ int main()
 					break;
 			}
 
+			while (!change_value(head, 'O', select - 1))
+			{
+				std::cout << "\nReserved place, please try in another location\n";
+				i--;
+				//continue;
+				std::cout << "\nwhere do you want to put O : ";
+				std::cin >> select;
+				if (select > 0 && select <= 9)
+					break;
+
+			}
 
 			change_value(head, 'O', select - 1);
 			iscompleted(head);
@@ -609,6 +700,8 @@ int main()
 	}
 
 
+
+
 	//Calculating the Time Execution
 
 	double finish = clock();
@@ -616,7 +709,8 @@ int main()
 
 
 
+
 	return 0;
-
-
 }
+
+
