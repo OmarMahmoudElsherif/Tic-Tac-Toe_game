@@ -4,20 +4,20 @@
 #include <iostream>
 #include<stdlib.h>
 #include <time.h>
-#include <algorithm>
 #include <Windows.h>
-#include<fstream>
+#include <algorithm>
 using namespace std;
 
 
-struct node           // we implemented this game using linked list 
+struct node           // we implemented this game using linked list and arrays *FROM SCRATCH*
 {
 	char data;
 	node* next;
 };
 
+//function to insert a node in a linked list at a given position
 
-void insert_at_position(node** head, char data, int pos)    //function to insert a node at a given position
+void insert_at_position(node** head, char data, int pos)
 {
 	node* newnode = new node();
 	node* prev;
@@ -51,9 +51,9 @@ void insert_at_position(node** head, char data, int pos)    //function to insert
 
 }
 
+//displaying the 3x3 tic-tac-toe board
 
-
-void display(node* head)           //displaying the 3x3 tic-tac-toe board
+void display(node* head)
 {
 	system("CLS");    // to clear screen
 
@@ -74,7 +74,8 @@ void display(node* head)           //displaying the 3x3 tic-tac-toe board
 }
 
 
-bool change_value(node* head, char data, int index)  //function to put either 'X' or 'O' in board
+//function to put either 'X' or 'O' in board
+bool change_value(node* head, char data, int index)
 {
 	for (int i = 0; i < index; i++)
 		head = head->next;
@@ -87,12 +88,15 @@ bool change_value(node* head, char data, int index)  //function to put either 'X
 }
 
 
-void iscompleted(node* head)        //this function is used to check if any player won
+//this function is used to check if either 'X' or 'O' won or draw
+
+void iscompleted(node* head)
 {
+	// check if any row is matched with same type
 	node* tmphead = head;
 	int Xcounter = 0;
 	int Ocounter = 0;
-	for (int j = 0; j < 3; j++)        // check if any row is matched with same type
+	for (int j = 0; j < 3; j++)
 	{
 		Xcounter = 0;
 		Ocounter = 0;
@@ -122,125 +126,137 @@ void iscompleted(node* head)        //this function is used to check if any play
 
 	}
 
-	tmphead = head;             //check if Left diagonal X is completed
+	//check if Left diagonal X is completed
+	tmphead = head;
 	Xcounter = Ocounter = 0;
 	if (tmphead->data == 'X')
 	{
 		Xcounter++;
-		for (int j = 0; j < 4; j++)
-			tmphead = tmphead->next;
+		//for (int j = 0; j < 4; j++)
+		  //tmphead=tmphead->next;
+		tmphead = tmphead->next->next->next->next;
 
 		if (tmphead->data == 'X')
 			Xcounter++;
 
-		for (int j = 0; j < 4; j++)
-			tmphead = tmphead->next;
+		//for (int j = 0; j < 4; j++)
+		  //tmphead=tmphead->next;
+		tmphead = tmphead->next->next->next->next;
+		if (tmphead->data == 'X')
+			Xcounter++;
+
+	}
+
+	//check if Left diagonal O is completed
+	tmphead = head;
+	if (tmphead->data == 'O')
+	{
+		Ocounter++;
+		//for (int j = 0; j < 4; j++)
+		  //tmphead=tmphead->next;
+		tmphead = tmphead->next->next->next->next;
+		if (tmphead->data == 'O')
+			Ocounter++;
+
+		//for (int j = 0; j < 4; j++)
+		  //tmphead=tmphead->next;
+		tmphead = tmphead->next->next->next->next;
+		if (tmphead->data == 'O')
+			Ocounter++;
+
+	}
+	if (Xcounter == 3)
+	{
+		display(head);
+		std::cout << "\n---------------X Won...-------------\n";
+
+		exit(0);
+	}
+	if (Ocounter == 3)
+	{
+		display(head);
+		std::cout << "\n---------------O Won...-------------\n";
+
+		exit(0);
+	}
+
+	//check if Right diagonal X is completed
+	tmphead = head->next->next;
+	Xcounter = Ocounter = 0;
+	if (tmphead->data == 'X')
+	{
+		Xcounter++;
+		//for (int j = 0; j < 2; j++)
+		   //tmphead=tmphead->next;
+		tmphead = tmphead->next->next;
 
 		if (tmphead->data == 'X')
 			Xcounter++;
 
+		//for (int j = 0; j < 2; j++)
+		  //tmphead=tmphead->next;
+		tmphead = tmphead->next->next;
+
+		if (tmphead->data == 'X')
+			Xcounter++;
+
+	}
+
+
+	//check if Right diagonal O is completed
+	tmphead = head->next->next;
+	if (tmphead->data == 'O')
+	{
+		Ocounter++;
+		//for (int j = 0; j < 2; j++)
+		  //tmphead=tmphead->next;
+		tmphead = tmphead->next->next;
+
+		if (tmphead->data == 'O')
+			Ocounter++;
+
+		//for (int j = 0; j < 2; j++)
+		  //tmphead=tmphead->next;
+		tmphead = tmphead->next->next;
+
+		if (tmphead->data == 'O')
+			Ocounter++;
+
+	}
+	if (Xcounter == 3)
+	{
+		display(head);
+		std::cout << "\n---------------X Won...-------------\n";
+
+		exit(0);
+	}
+	if (Ocounter == 3)
+	{
+		display(head);
+		std::cout << "\n---------------O Won...-------------\n";
+
+		exit(0);
 	}
 
 
 	tmphead = head;
-	if (tmphead->data == 'O')           //check if Left diagonal O is completed
-	{
-		Ocounter++;
-		for (int j = 0; j < 4; j++)
-			tmphead = tmphead->next;
-		if (tmphead->data == 'O')
-			Ocounter++;
-
-		for (int j = 0; j < 4; j++)
-			tmphead = tmphead->next;
-
-		if (tmphead->data == 'O')
-			Ocounter++;
-
-	}
-	if (Xcounter == 3)
-	{
-		display(head);
-		std::cout << "\n---------------X Won...-------------\n";
-
-		exit(0);
-	}
-	if (Ocounter == 3)
-	{
-		display(head);
-		std::cout << "\n---------------O Won...-------------\n";
-
-		exit(0);
-	}
-
-	tmphead = head->next->next;                  //check if Right diagonal X is completed
-	Xcounter = Ocounter = 0;
-	if (tmphead->data == 'X')
-	{
-		Xcounter++;
-		for (int j = 0; j < 2; j++)
-			tmphead = tmphead->next;
-
-		if (tmphead->data == 'X')
-			Xcounter++;
-
-		for (int j = 0; j < 2; j++)
-			tmphead = tmphead->next;
-
-		if (tmphead->data == 'X')
-			Xcounter++;
-
-	}
-
-
-	tmphead = head->next->next;                  //check if Right diagonal O is completed
-	if (tmphead->data == 'O')
-	{
-		Ocounter++;
-		for (int j = 0; j < 2; j++)
-			tmphead = tmphead->next;
-
-		if (tmphead->data == 'O')
-			Ocounter++;
-
-		for (int j = 0; j < 2; j++)
-			tmphead = tmphead->next;
-
-		if (tmphead->data == 'O')
-			Ocounter++;
-
-	}
-	if (Xcounter == 3)
-	{
-		display(head);
-		std::cout << "\n---------------X Won...-------------\n";
-
-		exit(0);
-	}
-	if (Ocounter == 3)
-	{
-		display(head);
-		std::cout << "\n---------------O Won...-------------\n";
-
-		exit(0);
-	}
-
-
-	tmphead = head;              // check if any column is matched with same type
+	// check if any column is matched with same type
 	for (int j = 0; j < 3; j++)
 	{
 		Xcounter = Ocounter = 0;
 		if (tmphead->data == 'X')
 		{
 			Xcounter++;
-			for (int j = 0; j < 3; j++)
-				tmphead = tmphead->next;
+			//for (int j = 0; j < 3; j++)
+			   //tmphead=tmphead->next;
+			tmphead = tmphead->next->next->next;
 
 			if (tmphead->data == 'X')
 				Xcounter++;
 
-			for (int j = 0; j < 3; j++)
-				tmphead = tmphead->next;
+			//for (int j = 0; j < 3; j++)
+			  //tmphead=tmphead->next;
+			tmphead = tmphead->next->next->next;
 
 			if (tmphead->data == 'X')
 				Xcounter++;
@@ -248,21 +264,28 @@ void iscompleted(node* head)        //this function is used to check if any play
 		}
 		else if (tmphead->data == 'O')
 		{
+
 			Ocounter++;
-			for (int j = 0; j < 3; j++)
-				tmphead = tmphead->next;
+			//for (int j = 0; j < 3; j++)
+			   //tmphead=tmphead->next;
+			tmphead = tmphead->next->next->next;
 
 			if (tmphead->data == 'O')
 				Ocounter++;
 
-			for (int j = 0; j < 3; j++)
-				tmphead = tmphead->next;
+			//for (int j = 0; j < 3; j++)
+			   //tmphead=tmphead->next;
+			tmphead = tmphead->next->next->next;
 
 			if (tmphead->data == 'O')
 				Ocounter++;
 
 		}
-
+		for (int k = 0; k <= j; k++)
+		{
+			tmphead = head;
+			tmphead = tmphead->next;
+		}
 		if (Xcounter == 3)
 		{
 			display(head);
@@ -283,6 +306,8 @@ void iscompleted(node* head)        //this function is used to check if any play
 	}
 
 }
+
+//Easy diffuclty -single player function
 
 int Easy_difficulty(node* head)
 {
@@ -307,6 +332,9 @@ int Easy_difficulty(node* head)
 	}
 	return random_no;
 }
+
+
+//to draw grid
 
 char gridChar(int i)
 {
@@ -346,6 +374,8 @@ void draw(int a[9])
 	cout << "                |_____|_____|_____|     " << endl << endl << endl;
 
 }
+
+
 int win(const int board[9])
 {
 
@@ -360,6 +390,7 @@ int win(const int board[9])
 	}
 	return 0;
 }
+
 
 int minimax(int board[9], int player)
 {
@@ -386,6 +417,8 @@ int minimax(int board[9], int player)
 	if (move == -1) return 0;
 	return score;
 }
+
+
 void computerMove(int board[9])
 {
 	int move = -1;
@@ -693,5 +726,3 @@ int main()
 
 	return 0;
 }
-
-
