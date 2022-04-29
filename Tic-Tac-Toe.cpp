@@ -10,7 +10,7 @@
 using namespace std;
 
 
-struct node           // we implemented this game using linked list
+struct node           // we implemented this game using linked list 
 {
 	char data;
 	node* next;
@@ -56,25 +56,6 @@ void insert_at_position(node** head, char data, int pos)    //function to insert
 void display(node* head)           //displaying the 3x3 tic-tac-toe board
 {
 	system("CLS");    // to clear screen
-	  //system("Color 0E");   //making color text cyan
-
-	/*  first display method
-	int i = -1;
-	while (head != NULL)
-	{
-		i++;
-		if (i % 3 == 0)
-		{
-			std::cout << "\n                  ---------------\n                   | ";
-			std::cout << head->data << " | ";
-		}
-		else
-			std::cout << head->data << " | ";
-		head = head->next;
-
-	}
-	std::cout << "\n                  ---------------\n\n";
-	*/
 
 	cout << "\n";
 	cout << "                ___________________\n";
