@@ -5,6 +5,7 @@
 #include<stdlib.h>
 #include <time.h>
 #include <algorithm>
+#include<Windows.h>
 using namespace std;
 
 
@@ -50,25 +51,169 @@ void insert_at_position(node** head, char data, int pos)
 
 }
 
+//functions to display colored text
+
+void gotoxy(int x, int y)
+{
+	COORD pos = { x,y };
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+}
+
+void textcolour(int k)
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, k);
+}
+
+bool Xcolour(node* head)
+{
+	if (head->data == 'X')
+	{
+		textcolour(4);
+		cout << head->data;
+		textcolour(15);
+		return true;
+	}
+	return false;
+	
+}
+
+bool Ocolour(node* head)
+{
+	if (head->data == 'O')
+	{
+		textcolour(10);
+		cout << head->data;
+		textcolour(15);
+		return true;
+	}
+	return false;
+
+}
+
+
+bool Xcolour2(char a)
+{
+	if (a == 'X')
+	{
+		textcolour(4);
+		cout << a;
+		textcolour(15);
+		return true;
+	}
+	return false;
+
+}
+
+bool Ocolour2(char a)
+{
+	if (a == 'O')
+	{
+		textcolour(10);
+		cout << a;
+		textcolour(15);
+		return true;
+	}
+	return false;
+
+}
+
+
 //displaying the 3x3 tic-tac-toe board
 
 void display(node* head)
 {
 	system("CLS");    // to clear screen
-
+	textcolour(15);
 	cout << "\n";
 	cout << "                ___________________\n";
 	cout << "                |     |     |     |  " << endl;
-	cout << "                |  " << head->data << "  |  " << head->next->data << "  |  " << head->next->next->data << "  |  " << endl;
+	cout << "                |  ";
+	if (Xcolour(head)) {}
+	else if (Ocolour(head)) {}
+	else
+	{
+		cout << head->data;
+	}
+	cout << "  |  ";
+
+	if (Xcolour(head->next)) {}
+	else if (Ocolour(head->next)) {}
+	else
+	{
+		cout << head->next->data;
+	}
+	cout << "  |  ";
+	
+	if (Xcolour(head->next->next)) {}
+	else if (Ocolour(head->next->next)) {}
+	else
+	{
+		cout << head->next->next->data;
+	}
+	cout<< "  |  " << endl;
+
+
+	head = head->next->next->next;
+	
+
+	cout << "                |_____|_____|_____|" << endl;
+	cout << "                |     |     |     |  " << endl;
+	cout << "                |  ";
+	if (Xcolour(head)) {}
+	else if (Ocolour(head)) {}
+	else
+	{
+		cout << head->data;
+	}
+	cout << "  |  ";
+
+	if (Xcolour(head->next)) {}
+	else if (Ocolour(head->next)) {}
+	else
+	{
+		cout << head->next->data;
+	}
+	cout << "  |  ";
+
+	if (Xcolour(head->next->next)) {}
+	else if (Ocolour(head->next->next)) {}
+	else
+	{
+		cout << head->next->next->data;
+	}
+	cout << "  |  " << endl;
+
 	head = head->next->next->next;
 	cout << "                |_____|_____|_____|" << endl;
 	cout << "                |     |     |     |  " << endl;
-	cout << "                |  " << head->data << "  |  " << head->next->data << "  |  " << head->next->next->data << "  |  " << endl;
-	head = head->next->next->next;
-	cout << "                |_____|_____|_____|" << endl;
-	cout << "                |     |     |     |  " << endl;
-	cout << "                |  " << head->data << "  |  " << head->next->data << "  |  " << head->next->next->data << "  |  " << endl;
-	head = head->next->next->next;
+	cout << "                |  ";
+	
+	if (Xcolour(head)) {}
+	else if (Ocolour(head)) {}
+	else
+	{
+		cout << head->data;
+	}
+	cout << "  |  ";
+
+	if (Xcolour(head->next)) {}
+	else if (Ocolour(head->next)) {}
+	else
+	{
+		cout << head->next->data;
+	}
+	cout << "  |  ";
+
+	if (Xcolour(head->next->next)) {}
+	else if (Ocolour(head->next->next)) {}
+	else
+	{
+		cout << head->next->next->data;
+	}
+	cout << "  |  " << endl;
+	
+	
 	cout << "                |_____|_____|_____|" << endl << endl;
 }
 
@@ -111,15 +256,21 @@ void iscompleted(node* head)
 		if (Xcounter == 3)
 		{
 			display(head);
-			std::cout << "\n---------------X Won...-------------\n";
-
+			std::cout << "\n---------------";
+			textcolour(4);
+			 cout << " X Won... ";
+			textcolour(15);
+			cout << "------------- \n";
 			exit(0);
 		}
 		else if (Ocounter == 3)
 		{
 			display(head);
-			std::cout << "\n---------------O Won...-------------\n";
-
+			std::cout << "\n---------------";
+			textcolour(10);
+			cout << " O Won... ";
+			textcolour(15);
+			cout << "------------- \n";
 			exit(0);
 		}
 
@@ -167,15 +318,21 @@ void iscompleted(node* head)
 	if (Xcounter == 3)
 	{
 		display(head);
-		std::cout << "\n---------------X Won...-------------\n";
-
+		std::cout << "\n---------------";
+		textcolour(4);
+		cout << " X Won... ";
+		textcolour(15);
+		cout << "------------- \n";
 		exit(0);
 	}
 	if (Ocounter == 3)
 	{
 		display(head);
-		std::cout << "\n---------------O Won...-------------\n";
-
+		std::cout << "\n---------------";
+		textcolour(10);
+		cout << " O Won... ";
+		textcolour(15);
+		cout << "------------- \n";
 		exit(0);
 	}
 
@@ -225,15 +382,21 @@ void iscompleted(node* head)
 	if (Xcounter == 3)
 	{
 		display(head);
-		std::cout << "\n---------------X Won...-------------\n";
-
+		std::cout << "\n---------------";
+		textcolour(4);
+		cout << " X Won... ";
+		textcolour(15);
+		cout << "------------- \n";
 		exit(0);
 	}
 	if (Ocounter == 3)
 	{
 		display(head);
-		std::cout << "\n---------------O Won...-------------\n";
-
+		std::cout << "\n---------------";
+		textcolour(10);
+		cout << " O Won... ";
+		textcolour(15);
+		cout << "------------- \n";
 		exit(0);
 	}
 
@@ -288,8 +451,11 @@ void iscompleted(node* head)
 		if (Xcounter == 3)
 		{
 			display(head);
-			std::cout << "\n---------------X Won...-------------\n";
-
+			std::cout << "\n---------------";
+			textcolour(4);
+			cout << " X Won... ";
+			textcolour(15);
+			cout << "------------- \n";
 			exit(0);
 		}
 		tmphead = head;
@@ -298,8 +464,11 @@ void iscompleted(node* head)
 		if (Ocounter == 3)
 		{
 			display(head);
-			std::cout << "\n---------------O Won...-------------\n";
-
+			std::cout << "\n---------------";
+			textcolour(10);
+			cout << " O Won... ";
+			textcolour(15);
+			cout << "------------- \n";
 			exit(0);
 		}
 	}
@@ -355,21 +524,91 @@ void draw(int a[9])
 	cout << "                |  1  |  2  |  3  |  " << endl;
 	cout << "                |     |     |     |  " << endl;
 
-	cout << "                |  " << gridChar(a[0]) << "  |  " << gridChar(a[1]) << "  |  " << gridChar(a[2]) << "  |  " << endl;
+	cout << "                |  ";
 
+	if(Xcolour2(gridChar(a[0]))) {}
+	else if (Ocolour2(gridChar(a[0]))) {}
+	else
+	{
+		cout << gridChar(a[0]);
+	}
+	cout << "  |  ";
+	
+	if (Xcolour2(gridChar(a[1]))) {}
+	else if (Ocolour2(gridChar(a[1]))) {}
+	else
+	{
+		cout << gridChar(a[1]);
+	}
+	cout << "  |  ";
+	
+	if (Xcolour2(gridChar(a[2]))) {}
+	else if (Ocolour2(gridChar(a[2]))) {}
+	else
+	{
+		cout << gridChar(a[2]);
+	}
+	cout << "  |  "<<endl;
 
 	cout << "                |_____|_____|_____|" << endl;
 	cout << "                |  4  |  5  |  6  |  " << endl;
 	cout << "                |     |     |     |  " << endl;
+	cout << "                |  ";
+	if (Xcolour2(gridChar(a[3]))) {}
+	else if (Ocolour2(gridChar(a[3]))) {}
+	else
+	{
+		cout << gridChar(a[3]);
+	}
+	cout << "  |  ";
 
+	if (Xcolour2(gridChar(a[4]))) {}
+	else if (Ocolour2(gridChar(a[4]))) {}
+	else
+	{
+		cout << gridChar(a[4]);
+	}
+	cout << "  |  ";
 
-	cout << "                |  " << gridChar(a[3]) << "  |  " << gridChar(a[4]) << "  |  " << gridChar(a[5]) << "  |  " << endl;
+	if (Xcolour2(gridChar(a[5]))) {}
+	else if (Ocolour2(gridChar(a[5]))) {}
+	else
+	{
+		cout << gridChar(a[5]);
+	}
+	cout << "  |  " << endl;
 
 	cout << "                |_____|_____|_____|" << endl;
 	cout << "                |  7  |  8  |  9  |  " << endl;
 	cout << "                |     |     |     |  " << endl;
 
-	cout << "                |  " << gridChar(a[6]) << "  |  " << gridChar(a[7]) << "  |  " << gridChar(a[8]) << "  |  " << endl;
+	cout << "                |  ";
+	if (Xcolour2(gridChar(a[6]))) {}
+	else if (Ocolour2(gridChar(a[6]))) {}
+	else
+	{
+		cout << gridChar(a[6]);
+	}
+	cout << "  |  ";
+
+	if (Xcolour2(gridChar(a[7]))) {}
+	else if (Ocolour2(gridChar(a[7]))) {}
+	else
+	{
+		cout << gridChar(a[7]);
+	}
+	cout << "  |  ";
+
+	if (Xcolour2(gridChar(a[8]))) {}
+	else if (Ocolour2(gridChar(a[8]))) {}
+	else
+	{
+		cout << gridChar(a[8]);
+	}
+	cout << "  |  " << endl;
+	
+	
+	
 	cout << "                |_____|_____|_____|     " << endl << endl << endl;
 
 }
@@ -713,15 +952,10 @@ int main()
 	}
 
 
-
-
 	//Calculating the Time Execution
 
 	double finish = clock();
 	cout << "\nTime execution : " << (finish - start) / (CLOCKS_PER_SEC) << "\n\n";
-
-
-
 
 	return 0;
 }
