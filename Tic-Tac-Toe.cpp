@@ -53,11 +53,6 @@ void insert_at_position(node** head, char data, int pos)
 
 //functions to display colored text
 
-void gotoxy(int x, int y)
-{
-	COORD pos = { x,y };
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-}
 
 void textcolour(int k)
 {
